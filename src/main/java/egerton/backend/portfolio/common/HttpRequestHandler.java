@@ -16,7 +16,7 @@ public class HttpRequestHandler {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HttpRequestHandler.class);
 
-    public static String sendGetRequest(String url, String userAgent, String authorizationKey) {
+    public static String sendGetRequestUSAJobs(String url, String userAgent, String authorizationKey) {
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
@@ -32,6 +32,23 @@ public class HttpRequestHandler {
             e.printStackTrace();
             LOGGER.info( "Interrupted!", e);
             return "USAJobs API Service Not Available."; 
+        }
+    }
+
+    public static String sendGetRequestWeather(String url) {
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url))
+                .build();
+
+        try {
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            LOGGER.info(String.format("HttpResponse successful"));
+            return response.body();
+        } catch (Exception e) {
+            e.printStackTrace();
+            LOGGER.info( "Interrupted!", e);
+            return "Weather API Service Not Available."; 
         }
     }
 }

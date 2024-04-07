@@ -30,6 +30,9 @@ public class USAJobsController {
     @Value("${usa.jobs.api.search}")
     private String search;  
 
+     @Value("${usa.jobs.api.Keyword}")
+    private String Keyword; 
+
     @GetMapping("current-jobs")
     public String getUSAJobs(HttpServletRequest req, @RequestParam(required = false) String title,
                               @RequestParam(required = false) String location) {
@@ -38,10 +41,16 @@ public class USAJobsController {
 
         String locationURL = url + LocationName + location;
         String titleLocationURL = url + search + "&Keyword=" + title + "&LocationName=" + location;
-
+        String keywordURL = url + Keyword + title;                 
+        
         if (title.isEmpty() && location.length() > 0){
-            return HttpRequestHandler.sendGetRequest(locationURL, userAgent, authorizationKey);
+            return HttpRequestHandler.sendGetRequestUSAJobs(locationURL, userAgent, authorizationKey);
         }
-        else return HttpRequestHandler.sendGetRequest(titleLocationURL, userAgent, authorizationKey);
+        else if(title.length() > 0 && location.isEmpty()){
+            return HttpRequestHandler.sendGetRequestUSAJobs(keywordURL, userAgent, authorizationKey);
+        }
+        else {
+            return HttpRequestHandler.sendGetRequestUSAJobs(titleLocationURL, userAgent, authorizationKey);
+        }
     }
 }
