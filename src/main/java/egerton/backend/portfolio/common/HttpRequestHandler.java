@@ -51,4 +51,21 @@ public class HttpRequestHandler {
             return "Weather API Service Not Available."; 
         }
     }
+
+    public static String sendGetRequestStocks(String url) {
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url))
+                .build();
+
+        try {
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            LOGGER.info(String.format("HttpResponse successful"));
+            return response.body();
+        } catch (Exception e) {
+            e.printStackTrace();
+            LOGGER.info( "Interrupted!", e);
+            return "Stocks API Service Not Available."; 
+        }
+    }
 }

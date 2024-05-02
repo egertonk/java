@@ -51,7 +51,7 @@ public class WeatherController {
             String jsonString = HttpRequestHandler.sendGetRequestWeather(userIPAddress);
             ObjectMapper objectMapper = new ObjectMapper();
             IPData ipData = objectMapper.readValue(jsonString, IPData.class);
-            String ipWeather = weatherapi + current + ".json?key=" + weatherKey + "&q=" + ipData.getIp() + "&days=7&aqi=no";
+            String ipWeather = weatherapi + forecast + ".json?key=" + weatherKey + "&q=" + ipData.getIp() + "&days=7&aqi=no";
             return HttpRequestHandler.sendGetRequestWeather(ipWeather);
         }
     }
