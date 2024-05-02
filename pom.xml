@@ -10,7 +10,7 @@
 	<groupId>backend.portfolio</groupId>
 	<artifactId>springboot-backend</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>springboot-backend</name>
+	<name>Fullstack-Portflio-App</name>
 	<description>Egerton Portfolio Project </description>
 	<properties>
 		<java.version>17</java.version>
