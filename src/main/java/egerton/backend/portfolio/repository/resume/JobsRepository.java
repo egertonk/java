@@ -1,16 +1,16 @@
-package egerton.backend.portfolio.repository.resume;
+// package egerton.backend.portfolio.repository.resume;
 
-import org.springframework.stereotype.Repository;
+// import org.springframework.stereotype.Repository;
 
-import egerton.backend.portfolio.model.resume.Jobs;
+// import egerton.backend.portfolio.model.resume.Jobs;
 
-import java.util.List;
-import org.springframework.data.jpa.repository.JpaRepository;
+// import java.util.List;
+// import org.springframework.data.jpa.repository.JpaRepository;
 
-@Repository
-public interface JobsRepository extends JpaRepository<Jobs, Long>{
+// @Repository
+// public interface JobsRepository extends JpaRepository<Jobs, Long>{
 
-	@Override
-    List<Jobs> findAll();
+// 	@Override
+//     List<Jobs> findAll();
 
-}
+// }

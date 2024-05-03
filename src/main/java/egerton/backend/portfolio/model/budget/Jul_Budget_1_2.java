@@ -1,17 +1,17 @@
-package egerton.backend.portfolio.model.budget;
+// package egerton.backend.portfolio.model.budget;
 
-import egerton.backend.portfolio.implementation.Budget_Table_Impl;
-import jakarta.persistence.*;
+// import egerton.backend.portfolio.implementation.Budget_Table_Impl;
+// import jakarta.persistence.*;
 
-@Entity
-@Table(name = "jul_budget_1_2")
-public class Jul_Budget_1_2 extends Budget_Table_Impl {
-    public Jul_Budget_1_2() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
+// @Entity
+// @Table(name = "jul_budget_1_2")
+// public class Jul_Budget_1_2 extends Budget_Table_Impl {
+//     public Jul_Budget_1_2() {
+//         super();
+//         // TODO Auto-generated constructor stub
+//     }
 
-    public Jul_Budget_1_2(long id, String itemName, double itemAmount, String tableName) {
-        super(id, itemName, itemAmount, tableName);
-    }
-}
+//     public Jul_Budget_1_2(long id, String itemName, double itemAmount, String tableName) {
+//         super(id, itemName, itemAmount, tableName);
+//     }
+// }

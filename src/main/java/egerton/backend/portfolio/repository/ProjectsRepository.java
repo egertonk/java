@@ -1,15 +1,15 @@
-package egerton.backend.portfolio.repository;
+// package egerton.backend.portfolio.repository;
 
-import java.util.List;
+// import java.util.List;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-import egerton.backend.portfolio.model.Projects;
+// import org.springframework.data.jpa.repository.JpaRepository;
+// import org.springframework.stereotype.Repository;
+// import egerton.backend.portfolio.model.Projects;
 
-@Repository
-public interface ProjectsRepository extends JpaRepository<Projects, Long>{
+// @Repository
+// public interface ProjectsRepository extends JpaRepository<Projects, Long>{
 
-	@Override
-    List<Projects> findAll();
+// 	@Override
+//     List<Projects> findAll();
 
-}
+// }
