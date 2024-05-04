@@ -23,7 +23,7 @@ public class SpringbootBackendApplication implements CommandLineRunner {
 	
 	private static final Logger LOGGER=LoggerFactory.getLogger(SpringbootBackendApplication.class);
 	
-	@GetMapping
+	@GetMapping("/message")
 	public String message(){
 		return "Egerton, Jessa, Brighton During";
 	}
