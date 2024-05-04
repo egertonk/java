@@ -8,8 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
-// @CrossOrigin(origins = "http://localhost:3000/")
-@CrossOrigin(origins = "https://fullstack-portflio-app.scm.azurewebsites.net/")
+@CrossOrigin(origins = "http://localhost:3000/")
+// @CrossOrigin(origins = "https://fullstack-portflio-app.scm.azurewebsites.net/")
 @RestController
 @RequestMapping("usajobs/")
 public class USAJobsController {
