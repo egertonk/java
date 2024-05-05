@@ -13,8 +13,9 @@
 	<name>Fullstack-Portflio-App</name>
 	<description>Egerton Portfolio Project </description>
 	<properties>
-		<maven.compiler.release>17</maven.compiler.release>
-		<java.version>17</java.version>
+		<maven.compiler.source>13</maven.compiler.source>
+	    <maven.compiler.target>13</maven.compiler.target>
+		<java.version>21.0.2</java.version>
 	</properties>
 
 	<dependencies>
@@ -107,13 +108,15 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.8.0</version>
 				<configuration>
-					<source>1.8</source> 
-					<target>1.8</target>
+					<source>13</source>
+	            	<target>13</target>
+					<mainClass>egerton.backend.portfolio.SpringbootBackendApplication</mainClass>
+            		<layout>JAR</layout>
 				</configuration>
 			</plugin>
 		</plugins>
+		<finalName>Egerton-During-Backend</finalName>
 	</build>
 
 </project>
