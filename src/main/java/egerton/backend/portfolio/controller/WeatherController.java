@@ -15,7 +15,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 // @CrossOrigin(origins = "http://localhost:3000/")
 // @CrossOrigin(origins = "https://fullstack-portflio-app.scm.azurewebsites.net/")
-@CrossOrigin(origins = "https://duringfamily.com/")
+@CrossOrigin(origins = {"https://duringfamily.com/"})
 @RestController
 @RequestMapping("weather/")
 public class WeatherController {
