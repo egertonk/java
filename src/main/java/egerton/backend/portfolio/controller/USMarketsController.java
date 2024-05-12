@@ -19,6 +19,7 @@ import jakarta.servlet.http.HttpServletRequest;
 
 // @CrossOrigin(origins = "http://localhost:3000/")
 // @CrossOrigin(origins = "https://fullstack-portflio-app.scm.azurewebsites.net/")
+@CrossOrigin(origins = "https://duringfamily.com/")
 @RestController
 @Api(value = "USMarketsController", description = "REST APIs for US Markets")
 @RequestMapping("us-markets/")

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 // @CrossOrigin(origins = "http://localhost:3000/")
 // @CrossOrigin(origins = "https://fullstack-portflio-app.scm.azurewebsites.net/")
+@CrossOrigin(origins = "https://duringfamily.com/")
 @RestController
 @RequestMapping("usajobs/")
 public class USAJobsController {
