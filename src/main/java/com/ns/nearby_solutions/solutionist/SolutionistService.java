@@ -19,12 +19,12 @@ import java.util.stream.Collectors;
 @Service
 public class SolutionistService {
 
-    private SolutionistRepository solutionistRepository;
-    private AddressRepository addressRepository;
-    private SkillRepository skillRepository;
-    private TalentRepository talentRepository;
-    private SocialMediaRepository socialMediaRepository;
-    private JobTitleRepository jobTitleRepository;
+    private final SolutionistRepository solutionistRepository;
+    private final AddressRepository addressRepository;
+    private final SkillRepository skillRepository;
+    private final TalentRepository talentRepository;
+    private final SocialMediaRepository socialMediaRepository;
+    private final JobTitleRepository jobTitleRepository;
 
     @Autowired
     public SolutionistService(SolutionistRepository solutionistRepository, AddressRepository addressRepository, SkillRepository skillRepository, TalentRepository talentRepository, SocialMediaRepository socialMediaRepository, JobTitleRepository jobTitleRepository) {
