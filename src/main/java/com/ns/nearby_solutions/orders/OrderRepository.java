@@ -6,8 +6,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
-@Repository
-public interface OrderRepository extends JpaRepository<Order, Integer> {
-    // Find orders by contractor ID
-    List<Order> findByContractorId(Integer contractorId);
-}
+//@Repository
+//public interface OrderRepository extends JpaRepository<Order, Integer> {
+//    // Find orders by contractor ID
+//    List<Order> findByContractorId(Integer contractorId);
+//}

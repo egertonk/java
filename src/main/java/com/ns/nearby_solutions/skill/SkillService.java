@@ -1,13 +1,14 @@
 package com.ns.nearby_solutions.skill;
 
-import com.ns.nearby_solutions.UserWithSolution;
-import com.ns.nearby_solutions.exception.ResourceNotFoundException;
-import com.ns.nearby_solutions.search.SolutionistDTO;
-import com.ns.nearby_solutions.solutionist.SolutionistService;
-import com.ns.nearby_solutions.talent.TalentRepository;
-import com.ns.nearby_solutions.talent.TalentService;
+//import com.ns.nearby_solutions.UserWithSolution;
+//import com.ns.nearby_solutions.exception.ResourceNotFoundException;
+//import com.ns.nearby_solutions.search.SolutionistDTO;
+//import com.ns.nearby_solutions.solutionist.SolutionistService;
+//import com.ns.nearby_solutions.talent.TalentRepository;
+//import com.ns.nearby_solutions.talent.TalentService;
 //import com.ns.nearby_solutions.talent_jobs.JobTitle;
-import com.ns.nearby_solutions.talent_jobs.JobTitleRepository;
+//import com.ns.nearby_solutions.talent_jobs.JobTitleRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,93 +17,110 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 public class SkillService {
 
     @Autowired
     private SkillRepository skillRepository;
 
-    @Autowired
-    private TalentService talentService;
-
-    @Autowired
-    private SolutionistService solutionistService;
-
-    @Autowired
-    private TalentRepository talentRepository;
-
-    @Autowired
-    private JobTitleRepository jobTitleRepository;
-
-    // Create a new skill
     public Skill addSkill(Skill skill) {
         return skillRepository.save(skill);
     }
 
+    public List<Skill> getSkillsByUserId(Long userId) {
+        return skillRepository.findByUserId(userId);
+    }
+
+//    @Autowired
+//    private TalentService talentService;
+
+//    @Autowired
+//    private SolutionistService solutionistService;
+
+//    @Autowired
+//    private TalentRepository talentRepository;
+
+//    @Autowired
+//    private JobTitleRepository jobTitleRepository;
+
+
     // Get all skills
     public List<Skill> getAllSkills() {
+        log.info("Fetching all skills: {}");
         return skillRepository.findAll();
     }
 
     // Get skill by ID
-    public Skill getSkillById(Long id) {
-        return skillRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Skill not found with id: " + id));
-    }
+//    public Skill getSkillById(Long id) {
+//        return skillRepository.findById(id)
+//                .orElseThrow(() -> new ResourceNotFoundException("Skill not found with id: " + id));
+//    }
 
     // Update skill
-    public Skill updateSkill(Long id, Skill updatedSkill) {
-        Skill skill = getSkillById(id);
-        skill.setName(updatedSkill.getName());
-        skill.setDescription(updatedSkill.getDescription());
-        skill.setProficiencyLevel(updatedSkill.getProficiencyLevel());
+//    public Skill updateSkill(Long id, Skill updatedSkill) {
+//        Skill skill = getSkillById(id);
+//        skill.setName(updatedSkill.getName());
+//        skill.setDescription(updatedSkill.getDescription());
+//        skill.setProficiencyLevel(updatedSkill.getProficiencyLevel());
+//        return skillRepository.save(skill);
+//    }
+
+    // Delete skill
+//    public void deleteSkill(Long id) {
+//        Skill skill = getSkillById(id);
+//        skillRepository.delete(skill);
+//    }
+
+    // Get all user skills by user ID
+    public List<Skill> getAllUserSkillsById(Long id) {
+        log.info("Get user skill by id: {}", id);
+        Optional<Skill> skillOptional = skillRepository.findById(id);
+        if (skillOptional.isPresent()) {
+            List<Skill> skills = new ArrayList<>();
+            skills.add(skillOptional.get());
+            return skills;
+        }
+        return new ArrayList<>();
+    }
+
+    public Skill saveSkill(Skill skill) {
+        log.info("Saving user skills: {}");
         return skillRepository.save(skill);
     }
 
-    // Delete skill
-    public void deleteSkill(Long id) {
-        Skill skill = getSkillById(id);
-        skillRepository.delete(skill);
+    public List<Skill> getSkillsById(long id) {
+        log.info("Fetching skills by id: {}", id);
+        return skillRepository.findById(id).stream().collect(Collectors.toList());
     }
 
-    public List<Skill> getAllUserSkillsById(Long id) {
-        return (List<Skill>) skillRepository.findById(id).orElse(null);
-    }
+    // Find solutionists by skill name
+//    public List<SolutionistDTO> findSolutionistBySkillName(String name) {
+//        List<Object[]> result = skillRepository.findSolutionistsBySkillName(name);
+//
+//        return result.stream().map(row -> {
+//            if (row[0] instanceof Number && row[1] instanceof Number) {
+//                Long userId = ((Number) row[0]).longValue();
+//                Long skillId = ((Number) row[1]).longValue();
+//                return new SolutionistDTO(userId, skillId);
+//            }
+//            throw new IllegalArgumentException("Unexpected data format in result set.");
+//        }).collect(Collectors.toList());
+//    }
 
-    // Method to find solutionists by skill name (case-insensitive)
-    public List<SolutionistDTO> findSolutionistBySkillName(String name) {
-        List<Object[]> result = skillRepository.findSolutionistsBySkillName(name);
-
-        // Convert result into SolutionistDTO list
-        return result.stream().map(row -> {
-            Long userId = ((Number) row[0]).longValue();
-            Long skillId = ((Number) row[1]).longValue();
-
-            // Return a SolutionistDTO
-            return new SolutionistDTO(userId, skillId);
-        }).collect(Collectors.toList());
-    }
-
-    // Method to find solutionists by skill name and then fetch data IDs
-    public List<Optional<UserWithSolution>> findSolutionistByJobTitle(String jobTitle) {
-        String searchTermWithWildcards = "%" + jobTitle + "%";
-
-        // Step 1: Extract solutionists by job title
-        List<Object[]> result = jobTitleRepository.findSolutionistsByJobTitle(searchTermWithWildcards);
-
-        // Step 2: Extract User IDs from the JobTitles result
-        List<Long> userIds = result.stream()
-                .map(item -> (Long) item[0])  // Extract user ID (first element of Object[])
-                .collect(Collectors.toList());
-
-        // Step 3: Fetch the solutionists associated with these user IDs
-        List<Optional<UserWithSolution>> solutionistsUser = new ArrayList<>();
-
-        userIds.forEach(accountId -> {
-            Optional<UserWithSolution> solutionistsData = solutionistService.getUserWithAddressesById(accountId);
-            solutionistsUser.add(solutionistsData); // Add the fetched Optional UserWithSolution to the list
-        });
-
-        return solutionistsUser;
-    }
+    // Find solutionists by job title
+//    public List<UserWithSolution> findSolutionistByJobTitle(String jobTitle) {
+//        String searchTermWithWildcards = "%" + jobTitle + "%";
+//
+//        List<Object[]> result = jobTitleRepository.findSolutionistsByJobTitle(searchTermWithWildcards);
+//        List<Long> userIds = result.stream()
+//                .map(item -> (Long) item[0])
+//                .collect(Collectors.toList());
+//
+//        return userIds.stream()
+//                .map(solutionistService::getUserWithAddressesById)
+//                .filter(Optional::isPresent)
+//                .map(Optional::get)
+//                .collect(Collectors.toList());
+//    }
 }

@@ -7,5 +7,5 @@ import java.util.List;
 @Repository
 public interface NoLicensePermitVerificationServiceRepository extends JpaRepository<NoLicensePermitVerificationService, Integer> {
     // Method to search by name
-    List<NoLicensePermitVerificationService> findByNameContainingIgnoreCase(String name);
+    List<NoLicensePermitVerificationService> findByCategoryContainingIgnoreCase(String category);
 }

@@ -1,25 +1,46 @@
 package com.ns.nearby_solutions.rental;
 
-import com.ns.nearby_solutions.solutionist.Solutionist;
 import jakarta.persistence.*;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
+@Table(name = "tools")
 public class Tool {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "tools_id_seq")
+    @SequenceGenerator(name = "tools_id_seq", sequenceName = "tools_id_seq", allocationSize = 1)
     private Long id;
+
+    @Column(name = "tool_name", nullable = false, length = 255)
     private String toolName;
+
+    @Column(name = "description")
     private String description;
+
+    @Column(name = "image_url", length = 255)
     private String imageUrl;
+
+    @Column(name = "price_per_day", nullable = false, precision = 10, scale = 2)
     private BigDecimal pricePerDay;
+
+    @Column(name = "available_from")
     private LocalDate availableFrom;
+
+    @Column(name = "available_to")
     private LocalDate availableTo;
 
-    @ManyToOne
-    private Solutionist solutionist;
+    @Column(name = "user_id")
+    private Long userId;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getToolName() {
         return toolName;
@@ -35,6 +56,14 @@ public class Tool {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public BigDecimal getPricePerDay() {
@@ -61,11 +90,11 @@ public class Tool {
         this.availableTo = availableTo;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 }

@@ -1,69 +1,34 @@
 package com.ns.nearby_solutions.skill;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.ns.nearby_solutions.solutionist.Solutionist;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "skills")
 public class Skill {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "skills_id_seq")
+    @SequenceGenerator(name = "skills_id_seq", sequenceName = "skills_id_seq", allocationSize = 1)
     private Long id;
 
-    @Column(nullable = false, length = 255)
+    @Column(name = "name", nullable = false, length = 255)
     private String name;
 
-    @Column(length = 255)
+    @Column(name = "description", length = 255)
     private String description;
 
     @Column(name = "proficiency_level", length = 255)
     private String proficiencyLevel;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = true, foreignKey = @ForeignKey(name = "skills_user_id_fkey"))
     @JsonIgnore // This will exclude the solutionist field from JSON responses
-    private Solutionist solutionist;
+    @Column(name = "user_id")
+    private Long userId;
 
-    // Getters and Setters
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getProficiencyLevel() {
-        return proficiencyLevel;
-    }
-
-    public void setProficiencyLevel(String proficiencyLevel) {
-        this.proficiencyLevel = proficiencyLevel;
-    }
-
-    public Solutionist getSolutionist() {
-        return solutionist;
-    }
-
-    public void setSolutionist(Solutionist solutionist) {
-        this.solutionist = solutionist;
-    }
+    @Column(name = "fix_price", nullable = false)
+    private Double fixPrice;
 }

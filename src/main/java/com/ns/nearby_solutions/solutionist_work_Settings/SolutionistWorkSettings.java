@@ -1,16 +1,17 @@
 package com.ns.nearby_solutions.solutionist_work_Settings;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.ns.nearby_solutions.solutionist.Solutionist;
 import jakarta.persistence.*;
-import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 
-import java.sql.Date;
-import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.LocalDateTime;
 
-
+@Getter
+@Setter
 @Entity
-@Table(name = "solutionist_work_settings", schema = "public")
+@Table(name = "solutionist_work_settings")
 public class SolutionistWorkSettings {
 
     @Id
@@ -18,37 +19,38 @@ public class SolutionistWorkSettings {
     @Column(name = "solutionist_work_settings_id")
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false, referencedColumnName = "id", foreignKey = @ForeignKey(name = "fk_solutionist_work_settings"))
-    @JsonIgnore // This will exclude the user field from JSON responses
-    private Solutionist solutionist;
+    @Column(name = "user_id", nullable = false)
+    private Long userId;
+
+    @Column(name = "address_id", nullable = false)
+    private Long addressId;
 
     @Column(name = "businessstarttime", nullable = false)
-    private Time businessStartTime;
+    private LocalTime businessStartTime;
 
     @Column(name = "businessendtime", nullable = false)
-    private Time businessEndTime;
+    private LocalTime businessEndTime;
 
     @Column(name = "oneblockedstatus", nullable = false)
     private Boolean oneBlockedStatus;
 
     @Column(name = "jobasapstatus", nullable = false)
-    private Boolean jobASAPStatus;
+    private Boolean jobAsapStatus;
 
     @Column(name = "onlinestatus", nullable = false)
     private Boolean onlineStatus;
 
     @Column(name = "availabledays", nullable = false, columnDefinition = "json")
-    private String availableDays; // Store JSON data as a String, or use a JSON library to map to a List
+    private String availableDays; // JSON stored as String
 
     @Column(name = "vacationstatus", nullable = false)
     private Boolean vacationStatus;
 
     @Column(name = "vacationstartdate")
-    private Date vacationStartDate;
+    private LocalDate vacationStartDate;
 
     @Column(name = "vacationenddate")
-    private Date vacationEndDate;
+    private LocalDate vacationEndDate;
 
     @Column(name = "twentyfourhoursstatus", nullable = false)
     private Boolean twentyFourHoursStatus;
@@ -56,106 +58,24 @@ public class SolutionistWorkSettings {
     @Column(name = "twelvehoursstatus", nullable = false)
     private Boolean twelveHoursStatus;
 
-    // Getters and Setters
+    @Column(name = "timezone", length = 50)
+    private String timezone;
 
-    public Long getId() {
-        return id;
-    }
+    @Column(name = "last_updated_by")
+    private Long lastUpdatedBy;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    @Column(name = "work_location", length = 255)
+    private String workLocation;
 
-    public Solutionist getUser() {
-        return solutionist;
-    }
+    @Column(name = "special_instructions")
+    private String specialInstructions;
 
-    public Time getBusinessStartTime() {
-        return businessStartTime;
-    }
+    @Column(name = "created_at", columnDefinition = "timestamp default CURRENT_TIMESTAMP", updatable = false)
+    private LocalDateTime createdAt;
 
-    public void setBusinessStartTime(Time businessStartTime) {
-        this.businessStartTime = businessStartTime;
-    }
+    @Column(name = "updated_at", columnDefinition = "timestamp default CURRENT_TIMESTAMP")
+    private LocalDateTime updatedAt;
 
-    public Time getBusinessEndTime() {
-        return businessEndTime;
-    }
-
-    public void setBusinessEndTime(Time businessEndTime) {
-        this.businessEndTime = businessEndTime;
-    }
-
-    public Boolean getOneBlockedStatus() {
-        return oneBlockedStatus;
-    }
-
-    public void setOneBlockedStatus(Boolean oneBlockedStatus) {
-        this.oneBlockedStatus = oneBlockedStatus;
-    }
-
-    public Boolean getJobASAPStatus() {
-        return jobASAPStatus;
-    }
-
-    public void setJobASAPStatus(Boolean jobASAPStatus) {
-        this.jobASAPStatus = jobASAPStatus;
-    }
-
-    public Boolean getOnlineStatus() {
-        return onlineStatus;
-    }
-
-    public void setOnlineStatus(Boolean bandStatus) {
-        this.onlineStatus = bandStatus;
-    }
-
-    public String getAvailableDays() {
-        return availableDays;
-    }
-
-    public void setAvailableDays(String availableDays) {
-        this.availableDays = availableDays;
-    }
-
-    public Boolean getVacationStatus() {
-        return vacationStatus;
-    }
-
-    public void setVacationStatus(Boolean vacationStatus) {
-        this.vacationStatus = vacationStatus;
-    }
-
-    public Date getVacationStartDate() {
-        return vacationStartDate;
-    }
-
-    public void setVacationStartDate(Date vacationStartDate) {
-        this.vacationStartDate = vacationStartDate;
-    }
-
-    public Date getVacationEndDate() {
-        return vacationEndDate;
-    }
-
-    public void setVacationEndDate(Date vacationEndDate) {
-        this.vacationEndDate = vacationEndDate;
-    }
-
-    public Boolean getTwentyFourHoursStatus() {
-        return twentyFourHoursStatus;
-    }
-
-    public void setTwentyFourHoursStatus(Boolean twentyFourHoursStatus) {
-        this.twentyFourHoursStatus = twentyFourHoursStatus;
-    }
-
-    public Boolean getTwelveHoursStatus() {
-        return twelveHoursStatus;
-    }
-
-    public void setTwelveHoursStatus(Boolean twelveHoursStatus) {
-        this.twelveHoursStatus = twelveHoursStatus;
-    }
+    @Column(name = "long_term_subscription_allow", nullable = false, columnDefinition = "boolean default false")
+    private Boolean longTermSubscriptionAllow;
 }
-

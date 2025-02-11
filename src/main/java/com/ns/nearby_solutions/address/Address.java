@@ -1,131 +1,70 @@
 package com.ns.nearby_solutions.address;
 
 import jakarta.persistence.*;
-
+import lombok.Getter;
+import lombok.Setter;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+@Getter
+@Setter
 @Entity
-@Table(name = "addresses")
+@Table(name = "address")
 public class Address {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "address_id_seq")
+    @SequenceGenerator(name = "address_id_seq", sequenceName = "address_id_seq", allocationSize = 1)
     private Long id;
 
     @Column(name = "user_id", nullable = false)
     private Long userId;
 
-    @Column(nullable = false)
+    @Column(name = "street", nullable = false)
     private String street;
 
-    @Column(nullable = false)
+    @Column(name = "address_line_2")
+    private String addressLine2;
+
+    @Column(name = "city", nullable = false)
     private String city;
 
+    @Column(name = "state")
     private String state;
 
+    @Column(name = "region")
+    private String region;
+
+    @Column(name = "postal_code")
     private String postalCode;
 
-    @Column(nullable = false)
+    @Column(name = "country", nullable = false)
     private String country;
 
-    private String addressType = "home"; // Default value
+    @Column(name = "latitude", precision = 9, scale = 6)
+    private BigDecimal latitude;
 
-    @Column(name = "created_at", updatable = false)
-    private LocalDateTime createdAt = LocalDateTime.now();
+    @Column(name = "longitude", precision = 9, scale = 6)
+    private BigDecimal longitude;
 
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt = LocalDateTime.now();
+    @Column(name = "address_type", nullable = false, columnDefinition = "character varying")
+    private String addressType;
 
-    @Column(nullable = false)
+    @Column(name = "label")
+    private String label;
+
+    @Column(name = "is_default", nullable = false, columnDefinition = "boolean default false")
+    private Boolean isDefault;
+
+    @Column(name = "is_verified", nullable = false, columnDefinition = "boolean default false")
+    private Boolean isVerified;
+
+    @Column(name = "permanent")
     private Boolean permanent;
 
-    // Getters and Setters
+    @Column(name = "created_at", nullable = false, columnDefinition = "timestamp without time zone default CURRENT_TIMESTAMP")
+    private LocalDateTime createdAt;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public String getStreet() {
-        return street;
-    }
-
-    public void setStreet(String street) {
-        this.street = street;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getState() {
-        return state;
-    }
-
-    public void setState(String state) {
-        this.state = state;
-    }
-
-    public String getPostalCode() {
-        return postalCode;
-    }
-
-    public void setPostalCode(String postalCode) {
-        this.postalCode = postalCode;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    public String getAddressType() {
-        return addressType;
-    }
-
-    public void setAddressType(String addressType) {
-        this.addressType = addressType;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public Boolean getPermanent() {
-        return permanent;
-    }
-
-    public void setPermanent(Boolean permanent) {
-        this.permanent = permanent;
-    }
+    @Column(name = "updated_at", nullable = false, columnDefinition = "timestamp without time zone default CURRENT_TIMESTAMP")
+    private LocalDateTime updatedAt;
 }

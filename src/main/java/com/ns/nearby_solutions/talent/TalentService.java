@@ -2,7 +2,6 @@ package com.ns.nearby_solutions.talent;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
@@ -15,8 +14,8 @@ public class TalentService {
         return talentRepository.findAll();
     }
 
-    public Talent getTalentById(Long id) {
-        return talentRepository.findById(id).orElse(null);
+    public Talent getTalentByUserId(Long id) {
+        return talentRepository.findByUser_Id(id);
     }
 
     public Talent saveTalent(Talent talent) {

@@ -2,7 +2,6 @@ package com.ns.nearby_solutions.address;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -28,5 +27,7 @@ public class AddressService {
         addressRepository.deleteById(id);
     }
 
-    // Additional methods can be added as needed
+    public List<Address> getAddressByUserId(Long userId) {
+        return addressRepository.findByUserId(userId);
+    }
 }

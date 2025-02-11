@@ -37,6 +37,6 @@ public class NoLicensePermitVerificationServiceService {
 
     // Search by Name
     public List<NoLicensePermitVerificationService> searchByName(String name) {
-        return repository.findByNameContainingIgnoreCase(name);
+        return repository.findByCategoryContainingIgnoreCase(name);
     }
 }
