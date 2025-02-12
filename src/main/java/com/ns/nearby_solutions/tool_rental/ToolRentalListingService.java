@@ -1,10 +1,9 @@
 package com.ns.nearby_solutions.tool_rental;
-
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -13,14 +12,13 @@ public class ToolRentalListingService {
 
     private final ToolRentalListingRepository repository;
 
-    @Autowired
     public ToolRentalListingService(ToolRentalListingRepository repository) {
         this.repository = repository;
     }
 
-    public List<ToolRentalListing> getAllTools() {
-        log.info("Getting all tools");
-        return repository.findAll();
+    public Page<ToolRentalListing> getAllTools(Pageable pageable) {
+        log.info("Getting all tools with pagination - Page: {}, Size: {}", pageable.getPageNumber(), pageable.getPageSize());
+        return repository.findAll(pageable);
     }
 
     public Optional<ToolRentalListing> getToolById(Long id) {
@@ -28,9 +26,10 @@ public class ToolRentalListingService {
         return repository.findById(id);
     }
 
-    public List<ToolRentalListing> getAvailableTools() {
-        log.info("Finding all tools that are available");
-        return repository.findByIsAvailable(true);
+    // ✅ Fix: Fetch available tools with pagination
+    public Page<ToolRentalListing> getAvailableTools(Pageable pageable) {
+        log.info("Fetching all available tools with pagination - Page: {}, Size: {}", pageable.getPageNumber(), pageable.getPageSize());
+        return repository.findByIsAvailable(true, pageable);
     }
 
     public ToolRentalListing addTool(ToolRentalListing tool) {
@@ -70,6 +69,7 @@ public class ToolRentalListingService {
     }
 
     public void deleteTool(Long id) {
+        log.info("Deleting tool by id: {}", id);
         repository.deleteById(id);
     }
 }

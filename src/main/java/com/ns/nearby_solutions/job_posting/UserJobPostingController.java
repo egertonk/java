@@ -1,18 +1,13 @@
 package com.ns.nearby_solutions.job_posting;
-
-import com.ns.nearby_solutions.enums.JobOrderStatus;
-import com.ns.nearby_solutions.user.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.time.LocalDateTime;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -25,72 +20,50 @@ public class UserJobPostingController {
         this.userJobPostingService = userJobPostingService;
     }
 
-    // Get all job postings
+    // ✅ Get all job postings with pagination
     @GetMapping
     public ResponseEntity<Page<UserJobPosting>> getAllJobPostings(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
 
-        log.info("Fetching valid job postings - Page: {}, Size: {}", page, size);
+        log.info("Fetching job postings - Page: {}, Size: {}", page, size);
         Pageable pageable = PageRequest.of(page, size);
-
-        // Fetch all job postings and filter the required ones
-        Page<UserJobPosting> jobPostings = userJobPostingService.getAllJobPostings(pageable);
-
-//        // Apply filtering
-//        List<UserJobPosting> filteredJobs = jobPostings.stream()
-//                .filter(job -> Boolean.TRUE.equals(job.getPaymentStatus()))  // paymentStatus must be true
-//                .filter(job -> Boolean.TRUE.equals(job.getJobAcceptedByPoster()))  // jobAcceptedByPoster must be true
-//                .filter(job -> "Listed".equalsIgnoreCase(job.getJobStatus()))  // jobStatus must NOT be "Under Review"
-//                .collect(Collectors.toList());
-//
-//        // Convert List to Page for response
-//        Page<UserJobPosting> filteredJobPostings = new PageImpl<>(filteredJobs, pageable, filteredJobs.size());
-
-        return ResponseEntity.ok(jobPostings);
+        return ResponseEntity.ok(userJobPostingService.getAllJobPostings(pageable));
     }
 
+    // ✅ Get valid job postings with pagination
     @GetMapping("/valid-listed-jobs")
     public ResponseEntity<Page<UserJobPosting>> getValidJobPostings(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
 
-        log.info("Fetching valid listed job postings from database - Page: {}, Size: {}", page, size);
+        log.info("Fetching valid job postings from database - Page: {}, Size: {}", page, size);
         Pageable pageable = PageRequest.of(page, size);
-
-        // Fetch jobs directly from the database with filtering
-        Page<UserJobPosting> jobPostings = userJobPostingService.getValidJobPostings(pageable);
-
-        return ResponseEntity.ok(jobPostings);
+        return ResponseEntity.ok(userJobPostingService.getValidListedJobPostings(pageable));
     }
 
-    // Get job posting by ID
-    @GetMapping("/{id}")
-    public ResponseEntity<UserJobPosting> getJobPostingById(@PathVariable Long id) {
-        Optional<UserJobPosting> jobPosting = userJobPostingService.getJobPostingById(id);
-       return jobPosting.map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
-    }
+    // ✅ Search job postings with filters and pagination
+    @GetMapping("/search")
+    public ResponseEntity<Page<UserJobPosting>> searchJobPostings(
+            @RequestParam(required = false) String jobCountry,
+            @RequestParam(required = false) LocalDateTime createdAt,
+            @RequestParam(required = false) String jobStatus,
+            @RequestParam(required = false) String experienceLevel,
+            @RequestParam(required = false) String urgencyLevel,
+            @RequestParam(required = false) String jobCityLocation,
+            @RequestParam(required = false) String jobZip,
+            @RequestParam(required = false) String jobDescription,
+            @RequestParam(required = false) String jobTask,
+            @RequestParam(required = false) String jobName,
+            @RequestParam(required = false) Long id,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
 
-    // Create a new job posting
-    @PostMapping
-    public ResponseEntity<UserJobPosting> createJobPosting(@RequestBody UserJobPosting jobPosting) {
-        UserJobPosting createdJobPosting = userJobPostingService.createJobPosting(jobPosting);
-        return ResponseEntity.ok(createdJobPosting);
-    }
-
-    // Update an existing job posting
-    @PutMapping("/{id}")
-    public ResponseEntity<UserJobPosting> updateJobPosting(@PathVariable Long id, @RequestBody UserJobPosting jobPosting) {
-        Optional<UserJobPosting> updatedJobPosting = userJobPostingService.updateJobPosting(id, jobPosting);
-        return updatedJobPosting.map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
-    }
-
-    // Delete a job posting
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteJobPosting(@PathVariable Long id) {
-        boolean deleted = userJobPostingService.deleteJobPosting(id);
-        return deleted ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
+        log.info("Searching job postings - Page: {}, Size: {}", page, size);
+        Pageable pageable = PageRequest.of(page, size);
+        return ResponseEntity.ok(userJobPostingService.searchJobPostings(
+                jobCountry, createdAt, jobStatus, experienceLevel, urgencyLevel,
+                jobCityLocation, jobZip, jobDescription, jobTask, jobName, id, pageable
+        ));
     }
 }
