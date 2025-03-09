@@ -72,4 +72,11 @@ public class ToolRentalListingService {
         log.info("Deleting tool by id: {}", id);
         repository.deleteById(id);
     }
+
+    public Page<ToolRentalListing> searchTools(String keyword, Pageable pageable) {
+        if (keyword == null || keyword.isBlank()) {
+            return repository.findByIsAvailableTrue(pageable);
+        }
+        return repository.searchByKeyword(keyword, pageable);
+    }
 }

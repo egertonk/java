@@ -29,6 +29,16 @@ public class UserJobPostingService {
         return userJobPostingRepository.findValidJobPostings(pageable);
     }
 
+    public Page<UserJobPosting> getValidListedJobPostingsHistory(Long solutionistId, Pageable pageable) {
+        log.info("Fetching valid listed jobs - Page: {}, Size: {}", pageable.getPageNumber(), pageable.getPageSize());
+        return userJobPostingRepository.findValidJobPostingsHistory(solutionistId, pageable);
+    }
+
+    public Page<UserJobPosting> getValidListedJobPostingsHistoryWithFilter(String jobStatus, Long solutionistId, Pageable pageable) {
+        log.info("Fetching valid listed jobs - Page: {}, Size: {}", pageable.getPageNumber(), pageable.getPageSize());
+        return userJobPostingRepository.findValidJobPostingsHistoryWithFilter(jobStatus, solutionistId, pageable);
+    }
+
     // ✅ Fetch job postings with filters and pagination
     public Page<UserJobPosting> searchJobPostings(
             String jobCountry, LocalDateTime createdAt, String jobStatus,

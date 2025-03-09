@@ -9,6 +9,23 @@ import java.time.LocalDateTime;
 
 public interface UserJobPostingRepository extends JpaRepository<UserJobPosting, Long> {
 
+    // ✅ Query for Valid Job Postings history (Best Performance)
+    @Query("SELECT j FROM UserJobPosting j " +
+            "WHERE j.jobAcceptedByPoster = true " +
+            "AND j.solutionistId = :solutionistId")
+    Page<UserJobPosting> findValidJobPostingsHistory(
+            @Param("solutionistId") Long solutionistId,
+            Pageable pageable);
+
+    @Query("SELECT j FROM UserJobPosting j " +
+            "WHERE j.jobAcceptedByPoster = true " +
+            "AND j.jobStatus = :jobStatus " +
+            "AND j.solutionistId = :solutionistId")
+    Page<UserJobPosting> findValidJobPostingsHistoryWithFilter(
+            @Param("jobStatus") String jobStatus,
+            @Param("solutionistId") Long solutionistId,
+            Pageable pageable);
+
     // ✅ Query for Valid Job Postings (Best Performance)
     @Query("SELECT j FROM UserJobPosting j " +
             "WHERE j.paymentStatus = true " +

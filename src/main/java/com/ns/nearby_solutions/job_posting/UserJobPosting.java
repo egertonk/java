@@ -24,6 +24,9 @@ public class UserJobPosting {
     @Column(name = "jobname", nullable = false)
     private String jobName;
 
+    @Column(name = "solutionist_id", nullable = false)
+    private Long solutionistId;
+
     @Column(name = "jobtask", nullable = false)
     private String jobTask;
 
@@ -123,6 +126,6 @@ public class UserJobPosting {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @Column(name = "images", columnDefinition = "TEXT[]")
-    private List<String> images;
+    @Column(name = "images")
+    private String images;
 }

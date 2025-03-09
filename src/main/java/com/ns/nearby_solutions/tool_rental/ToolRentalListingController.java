@@ -1,4 +1,7 @@
 package com.ns.nearby_solutions.tool_rental;
+import com.ns.nearby_solutions.customer.CustomerToolDetailsDTO;
+import com.ns.nearby_solutions.user.User;
+import com.ns.nearby_solutions.user.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -14,9 +17,11 @@ import java.util.Optional;
 public class ToolRentalListingController {
 
     private final ToolRentalListingService service;
+    private final UserService userService;
 
-    public ToolRentalListingController(ToolRentalListingService service) {
+    public ToolRentalListingController(ToolRentalListingService service, UserService userService) {
         this.service = service;
+        this.userService = userService;
     }
 
     // ✅ Fix: Ensure correct pagination
@@ -31,11 +36,18 @@ public class ToolRentalListingController {
         return ResponseEntity.ok(toolRentalListing);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ToolRentalListing> getToolById(@PathVariable Long id) {
+    @GetMapping("/{id}/{userId}")
+    public ResponseEntity<CustomerToolDetailsDTO> getToolById(@PathVariable Long id, @PathVariable Long userId) {
         Optional<ToolRentalListing> tool = service.getToolById(id);
-        return tool.map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+        User customer = userService.getUserById(userId);
+
+        log.info("Getting a specific tool information id: {}", id, " | userId: ", userId);
+
+        CustomerToolDetailsDTO dto = new CustomerToolDetailsDTO();
+        dto.setCustomerInformation(customer);
+        dto.setToolRentalDetails(tool);
+
+        return ResponseEntity.ok(dto);
     }
 
     @PostMapping
@@ -62,5 +74,18 @@ public class ToolRentalListingController {
         service.deleteTool(id);
         log.info("Deleting tool by id: {}", id);
         return ResponseEntity.noContent().build();
+    }
+
+    // ✅ Search tools by multiple fields (Only available tools)
+    @GetMapping("/search")
+    public ResponseEntity<Page<ToolRentalListing>> searchTools(
+            @RequestParam(required = false) String keyword,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+
+        log.info("Searching tools with keyword '{}', Page: {}, Size: {}", keyword, page, size);
+        Pageable pageable = PageRequest.of(page, size);
+        Page<ToolRentalListing> searchResults = service.searchTools(keyword, pageable);
+        return ResponseEntity.ok(searchResults);
     }
 }
